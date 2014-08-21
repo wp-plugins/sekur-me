@@ -1,0 +1,91 @@
+
+.errormsg{
+
+color:red;
+
+padding-bottom: 10px;
+display: block;
+}
+
+.mes{
+
+padding-left:219px;
+}
+
+.message{
+    display:none;
+    border:1px solid green;
+    background:#f0e3e3;
+    padding:10px;
+    margin-top: 10px
+}
+
+.sekurApp{
+    
+     position:absolute;
+    top: 55px;
+    left: 50%;
+    margin-left:-100px;
+    
+}
+
+#sekurMeDiv{
+    
+ /*   position:absolute;
+    top: 264px;
+    left: 672px;*/
+width:200px !important;    
+}
+
+
+
+#sekurMeDiv img {
+width:200px !important;
+}
+
+#or{
+    
+    margin-left: 112px;
+    font-weight: 900;
+    font-size: xx-large;
+}
+
+#company_id,#store_id,#store_auth,#host{
+    
+    width: 300px;
+    
+}
+
+#description{
+    
+    
+    
+}
+p.submit{
+    
+    padding-top: 10px;
+}
+
+
+
+#login_name{
+    
+    color:#3d96ba;
+    font-weight: normal;
+    position: absolute;
+    top: 20px;
+}
+.form-table th{
+    font-weight:400 !important;
+    
+}
+.login form {
+    
+    padding: 115px 20px 25px !important;
+    position:relative !important;
+}
+#backtoblog{
+    
+    display:none;
+    
+}
