@@ -3,7 +3,7 @@ Contributors: (this should be a list of wordpress.org userid's)
 Donate link: http://appserver.sekur.me/
 Tags: Sekur , Payment
 Requires at least: 2.7.0
-Tested up to: 3.9
+Tested up to: 4.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,7 +26,7 @@ Free email support is available at support@sekur.me.
 *  Contributors,
 *  Tags,
 *  Requires at least wordpress 2.7.0
-*  Tested upto 3.9
+*  Tested upto 4.1.1
 *
 ===Installation===
 1. Download the plugin from the wordpress.org.
