@@ -4,7 +4,7 @@ session_start();
 /*
 Plugin Name: SekurMe
 Plugin URI: http://localhost:8080/wordpress/
-version: 1.0
+version: 1.0.1
 Description: This is a Sekur me plugin for the Sekur Me payment gateway integration
 Author: Krijesh PV
 */
