@@ -232,7 +232,7 @@ register_deactivation_hook( __FILE__, 'SekurMeUninstall' );
 function SekurMe_extra_profile_fields( $user ) {
 
 	$user_id = get_current_user_id();
-	$sekur_id =get_user_meta(); 
+	$sekur_id =get_metadata('usermeta', $user_id); 
 	if(!$sekur_id){
 		require_once('sekurme_helper.php'); 
 		$config = array();
