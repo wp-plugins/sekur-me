@@ -5,7 +5,7 @@ session_start();
 Plugin Name: SekurMe
 Plugin URI: http://localhost:8080/wordpress/
 version: 1.0.1
-Description: Sekur Me Login: Eliminate UserIDs and Passwords, securely. Login with your fingerprint.
+Description:Sekur Me Login: Eliminate UserIDs and Passwords, securely. Login with your fingerprint.
 Author: Krijesh PV
 */
 
