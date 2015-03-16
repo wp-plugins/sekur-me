@@ -261,22 +261,25 @@ function SekurMe_extra_profile_fields( $user ) {
         <table class="form-table">
         <tr>
         <th><label for="sekurmelogin">Associate with <b><strong>SEKUR</strong></b><font color="red">.me</font></label></th>
-        <td>   
-            <div  style="vertical-align: top; margin-top: 0px;" class="sekurme-panel">
+        <td>  
+        <div  style="vertical-align: top; margin-top: 0px;" class="sekurme-panel">
         <?php  if(!empty($response)){ ?> 
-            <script> 
-               jQuery(function(){
-                var tssidValue = "<?php echo $response["TSSID"]  ?>"; 
-                var etxnIdValue = "<?php echo $response["ETXNID"]  ?>";
-                var qrUrl = "<?php echo $response["QRURL"]  ?>";
+            <script>
+           
+          $(function(){
+                var tssidValue = "2600113399"; 
+                var etxnIdValue = "1f7fc4d2-0d89-4";
+                var qrUrl = "http://saas.sekur.me:80/images/sekur.code-5290010167.jpg";
                 var buttonType = "Associate";
             SekurMe.configure("sekurMeDiv", tssidValue, etxnIdValue, qrUrl, buttonType);
-                  });
+                });
+
             </script>
         <?php  } ?>  
             </div>
         <?php  if(!empty($response)){ ?>
         <div id="sekurMeDiv"></div>
+        
             <?php }else { ?>
             <b> Sekur.me is associated with your account</b>    
             <?php } ?>
