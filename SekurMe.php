@@ -5,7 +5,7 @@ session_start();
 Plugin Name: SekurMe
 Plugin URI: http://localhost:8080/wordpress/
 version: 1.0.1
-Description: This plugin enables multi factor authentication using SEKUR.me
+Sekur Me Login: Eliminate UserIDs and Passwords, securely. Login with your fingerprint.
 Author: Krijesh PV
 */
 
