@@ -1,10 +1,11 @@
 <?php
 session_start();
+
 /*
 Plugin Name: SekurMe
 Plugin URI: http://localhost:8080/wordpress/
 version: 1.0.1
-Description: Sekur Me Login: Eliminate UserIDs and Passwords, securely. Login with your fingerprint.
+Description: This is a Sekur me plugin for the Sekur Me payment gateway integration
 Author: Krijesh PV
 */
 
@@ -38,7 +39,7 @@ function sekurme_response($response){
 	require_once('sekurme_helper.php');
 
 	$res_array = sekurme_helper::_process_response($response);
-        
+
 	if(isset($res_array['CompanyID'])){
 		$sekur_company_id = get_option('sekur_company_id');
 		if($res_array['CompanyID'] != $sekur_company_id){
@@ -47,8 +48,7 @@ function sekurme_response($response){
 			$res['ErrorCode'] = 1;
 			$res['StatusMessage'] = "CompanyID Error";
 			$xml_res = sekurme_helper::xml_generator($res,$root);
-			
-                        echo $xml_res;
+			echo $xml_res;
 			return;
 		}
 	}
@@ -59,7 +59,7 @@ function sekurme_response($response){
 		$res['ErrorCode'] = 1;
 		$res['StatusMessage'] = "CompanyID Error";
 		$xml_res = sekurme_helper::xml_generator($res,$root);
-         	echo $xml_res;
+		echo $xml_res;
 		return;
 	}
 	//Checking the Store ID
@@ -95,15 +95,15 @@ function sekurme_response($response){
 	if(!empty($sekur_action)){
 	
 		$sekur_action = $sekur_action[0]->sekuraction;
-
+	
 	}else{
 		$sekur_action = 0;
 	}
 		   	
 	//Checking the LocalUserID.
 	if($sekur_action == 11 ){
-	
-		$sql = 'delete from sekurmelogin where date_of_transaction<DATE_SUB(curdate(),INTERVAL 2 DAY)';
+		
+		$sql = 'delete from sekurmelogin where date_of_transaction<DATE_SUB(curdate(),INTERVAL '.DELETE_INTERVAL.'  DAY)';
 		$done =  $wpdb->query($sql);  
 		
 		$sql = "update sekurmelogin set sekur_id='".$res_array['SekurId']."' where etxnid = '".$res_array['ETXNID']."'";
@@ -134,7 +134,7 @@ function sekurme_response($response){
 		//$user = get_user_by( 'id',$res_array['LocalUserID'] );
 		$sql = "select * from wp_users where id=".$res_array['LocalUserID']; 
 		$user = $wpdb->get_row($sql);
-
+		
 		$sql = "update sekurmelogin set sekur_id='".$res_array['SekurId']."' where etxnid = '".$res_array['ETXNID']."'"; 
 	 	$done = $wpdb->query($sql);
 		
@@ -150,27 +150,27 @@ function sekurme_response($response){
 			return;
 	   }
 		$local_user_id = $res_array['LocalUserID']; 
-                
+	 
 		$query = "SELECT user_id FROM wp_usermeta WHERE  meta_key =  'sekurid_".$res_array['SekurId']."'";
 		$user_id= $wpdb->get_row($query);
-               
-		if(!empty($user_id)){ 
-			if($res_array['LocalUserID'] != $user_id->user_id){ 
+		
+		if(!empty($user_id)){
+			if($res_array['LocalUserID'] != $user_id[0]->user_id){
 				$query = "delete  FROM wp_usermeta WHERE  meta_key = 'sekurid_".$res_array['SekurId']."'"  ;
 				$wpdb->query($query);
-				update_user_meta( $local_user_id,'sekurid_'.$res_array['SekurId'],'sekurid');    
+				update_usermeta( $local_user_id,'sekurid_'.$res_array['SekurId'],'sekurid');    
 			}
-	
+			else{
 				$query = "delete  FROM wp_usermeta WHERE  meta_key like 'sekurid_%'  and user_id= ".$local_user_id;
 				$wpdb->query($query);
-				update_user_meta( $local_user_id,'sekurid_'.$res_array['SekurId'],'sekurid'); 
+				update_usermeta( $local_user_id,'sekurid_'.$res_array['SekurId'],'sekurid'); 
 			}
-		
+		}
 			else{
 			// Delete existing association for the local user id
 			$query = "delete  FROM wp_usermeta WHERE  meta_key like 'sekurid_%'  and user_id= ".$local_user_id;
 			$wpdb->query($query);
-			update_user_meta( $local_user_id,'sekurid_'.$res_array['SekurId'],'sekurid');  
+			update_usermeta( $local_user_id,'sekurid_'.$res_array['SekurId'],'sekurid');  
 		}
 		
 		$root = "SekurProcessVerificationResponse";
@@ -233,7 +233,6 @@ function SekurMe_extra_profile_fields( $user ) {
 
 	$user_id = get_current_user_id();
 	$sekur_id =get_metadata('usermeta', $user_id); 
-
 	if(!$sekur_id){
 		require_once('sekurme_helper.php'); 
 		$config = array();
@@ -261,25 +260,24 @@ function SekurMe_extra_profile_fields( $user ) {
         <table class="form-table">
         <tr>
         <th><label for="sekurmelogin">Associate with <b><strong>SEKUR</strong></b><font color="red">.me</font></label></th>
-        <td>  
-        <div  style="vertical-align: top; margin-top: 0px;" class="sekurme-panel">
-        <?php  if(!empty($response)){ ?> 
-            <script>
-           
-          $(function(){
-                var tssidValue = "2600113399"; 
-                var etxnIdValue = "1f7fc4d2-0d89-4";
-                var qrUrl = "http://saas.sekur.me:80/images/sekur.code-5290010167.jpg";
-                var buttonType = "Associate";
-            SekurMe.configure("sekurMeDiv", tssidValue, etxnIdValue, qrUrl, buttonType);
-                });
+        <td>   
+            <div  style="vertical-align: top; margin-top: 0px;" class="sekurme-panel">
+        
+            <script> 
+               
+              var tssidValue = "<?php echo $response["TSSID"]  ?>"; 
+              var etxnIdValue = "<?php echo $response["ETXNID"]  ?>";
+              var qrUrl = "<?php echo $response["QRURL"]  ?>";
+              var buttonType = "Associate";
+             
 
             </script>
-        <?php  } ?>  
+              <?php
+              wp_enqueue_script('sekurjs');
+              ?>
             </div>
         <?php  if(!empty($response)){ ?>
         <div id="sekurMeDiv"></div>
-        
             <?php }else { ?>
             <b> Sekur.me is associated with your account</b>    
             <?php } ?>
