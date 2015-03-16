@@ -5,7 +5,7 @@ session_start();
 Plugin Name: SekurMe
 Plugin URI: http://localhost:8080/wordpress/
 version: 1.0.1
-Description: This is a Sekur me plugin for the Sekur Me payment gateway integration
+Description: This plugin enables multi factor authentication using SEKUR.me
 Author: Krijesh PV
 */
 
@@ -262,19 +262,17 @@ function SekurMe_extra_profile_fields( $user ) {
         <th><label for="sekurmelogin">Associate with <b><strong>SEKUR</strong></b><font color="red">.me</font></label></th>
         <td>   
             <div  style="vertical-align: top; margin-top: 0px;" class="sekurme-panel">
-        
+        <?php  if(!empty($response)){ ?> 
             <script> 
-               
-              var tssidValue = "<?php echo $response["TSSID"]  ?>"; 
-              var etxnIdValue = "<?php echo $response["ETXNID"]  ?>";
-              var qrUrl = "<?php echo $response["QRURL"]  ?>";
-              var buttonType = "Associate";
-             
-
+               jQuery(function(){
+                var tssidValue = "<?php echo $response["TSSID"]  ?>"; 
+                var etxnIdValue = "<?php echo $response["ETXNID"]  ?>";
+                var qrUrl = "<?php echo $response["QRURL"]  ?>";
+                var buttonType = "Associate";
+            SekurMe.configure("sekurMeDiv", tssidValue, etxnIdValue, qrUrl, buttonType);
+                  });
             </script>
-              <?php
-              wp_enqueue_script('sekurjs');
-              ?>
+        <?php  } ?>  
             </div>
         <?php  if(!empty($response)){ ?>
         <div id="sekurMeDiv"></div>
