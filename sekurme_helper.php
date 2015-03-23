@@ -8,19 +8,27 @@ class sekurme_helper {
          $rootElement->appendChild($xml->createElement($id,$val));
       }
       $xml->appendChild($rootElement);
+    
+   
       return $xml->saveXml();
    }
     
    static function _process_response($response){
-      $xml = new DOMDocument();
-      $result = $xml->loadXML($response);
-      $data =array();        
-      foreach($xml->childNodes as $nodes){          
-         foreach($nodes->childNodes as $node){
+        
+     $xml = new DOMDocument();
+     $pattern = '/<\?xml version=[^>]+>/';
+     $output = preg_replace($pattern, '', $response);
+    	
+     $result = $xml->loadXML($output);
+	
+     $data =array();
+     foreach($xml->childNodes as $nodes){          
+       foreach($nodes->childNodes as $node){
 	    $data[$node->nodeName] = $node->nodeValue;
          }                 
       }
-      return $data;        
+   
+     return $data ;        
    }
    //Start transaction and making cURL request to the server. 
    static function start_trac($data,$host,$req_root){
